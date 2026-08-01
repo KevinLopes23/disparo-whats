@@ -39,7 +39,7 @@ Ideal para divulgação de imóveis, vagas ou anúncios recorrentes em múltiplo
 
 ```bash
 # Clone o repositório
-git clone https://github.com/seu-usuario/disparo-whats.git
+git clone https://github.com/KevinLopes23/disparo-whats.git
 cd disparo-whats
 
 # Instale as dependências
