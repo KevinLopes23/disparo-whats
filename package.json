@@ -1,0 +1,31 @@
+{
+  "name": "disparo-whats",
+  "version": "1.0.0",
+  "description": "🤖 Bot para envio automático de mensagens em grupos do WhatsApp usando whatsapp-web.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "postinstall": "echo ⚠️  Lembre-se de configurar seus grupos em config.js"
+  },
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "automation",
+    "cron",
+    "whatsapp-web.js"
+  ],
+  "author": "Kevin",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "node-cron": "^4.6.0",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.34.7"
+  }
+}
