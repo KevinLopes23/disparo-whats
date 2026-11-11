@@ -10,17 +10,7 @@ module.exports = {
      */
     groups: [
         'Grupo Exemplo 1',
-        'Grupo Exemplo 2',
-        'Grupo Exemplo 3',
-        'Grupo Exemplo 4',
-        'Grupo Exemplo 5',
-        'Grupo Exemplo 6',
-        'Grupo Exemplo 7',
-        'Grupo Exemplo 8',
-        'Grupo Exemplo 9',
-        'Grupo Exemplo 10',
-        'Grupo Exemplo 11',
-        'Grupo Exemplo 12'
+        'Grupo Exemplo 2'
     ],
 
     /**

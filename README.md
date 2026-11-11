@@ -82,6 +82,8 @@ module.exports = {
 };
 ```
 
+O `config.js` do repositório traz apenas valores de exemplo (grupos e telefone fictícios). Ao preencher com seus grupos e contatos reais, não faça commit dessas alterações — use `git update-index --skip-worktree config.js` para o Git ignorar suas mudanças locais.
+
 ```bash
 npm start
 ```
