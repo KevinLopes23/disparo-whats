@@ -1,151 +1,107 @@
+<div align="center">
+
 # 📲 Disparo WhatsApp
 
-Bot para envio automático e agendado de mensagens em grupos do WhatsApp.
+**Bot que envia a mesma mensagem para vários grupos do WhatsApp, na hora de iniciar e em horários agendados todos os dias.**
 
-Ideal para divulgação de imóveis, vagas ou anúncios recorrentes em múltiplos grupos de uma só vez.
+![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![WhatsApp](https://img.shields.io/badge/whatsapp--web.js-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)
+![Puppeteer](https://img.shields.io/badge/Puppeteer-40B5A4?style=for-the-badge&logo=puppeteer&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Node.js-18%2B-339933?logo=nodedotjs&logoColor=white" />
-  <img src="https://img.shields.io/badge/WhatsApp-Bot-25D366?logo=whatsapp&logoColor=white" />
-  <img src="https://img.shields.io/badge/Agendamento-Cron-blue?logo=clockify&logoColor=white" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow" />
-</p>
+</div>
 
 ---
+
+## 💡 Sobre
+
+Divulgar um anúncio recorrente (aluguel de quarto, vaga, serviço) em vários grupos de WhatsApp significa copiar e colar a mesma mensagem grupo por grupo, todo dia. Este bot conecta no WhatsApp Web, localiza os grupos pelo nome e dispara a mensagem configurada para todos eles, com pausas aleatórias entre envios, repetindo nos horários definidos.
 
 ## ✨ Funcionalidades
 
-| Feature | Descrição |
-|---|---|
-| 📨 **Disparo em massa** | Envia para múltiplos grupos automaticamente |
-| 🕒 **Agendamento** | Configura horários de envio diário com cron |
-| 🚀 **Disparo inicial** | Envia imediatamente ao iniciar o script |
-| 🔐 **Sessão persistente** | Escaneia o QR Code apenas na primeira vez |
-| 🔄 **Reconexão automática** | Reconecta sozinho se a conexão cair |
-| 🧠 **Busca inteligente** | Sugere nomes similares caso não encontre um grupo |
-| ⏱️ **Anti-spam** | Pausa aleatória entre envios (5–8s) |
+- **Envio para vários grupos** — lista de grupos-alvo por nome exato.
+- **Agendamento diário** — horários em formato 24 h (ex.: `[9, 18]`) via `node-cron`.
+- **Disparo inicial opcional** — envia assim que conecta (`sendOnStartup`).
+- **Sessão persistente** — QR Code só na primeira vez (`LocalAuth`).
+- **Reconexão automática** quando o WhatsApp desconecta.
+- **Relatório de grupos** — mostra quais foram encontrados e sugere nomes parecidos para os que não foram.
+- **Pausa anti-spam** de 5 a 8 s entre envios, com fallback de envio se o método principal falhar.
 
----
+## 🖥️ Exemplo de execução
 
-## 📋 Pré-requisitos
+```text
+$ npm start
+🔐 Sessão autenticada com sucesso!
+✅ WhatsApp conectado e pronto!
 
-- [Node.js](https://nodejs.org/) v18 ou superior
-- Uma conta de WhatsApp ativa
-- Navegador Chromium (instalado automaticamente pelo Puppeteer)
+⏳ Aguardando 15s para sincronizar os chats...
 
----
+[<data/hora>] 🚀 Disparo inicial imediato...
+🔍 Buscando grupos...
+📋 Chats: <n> | Grupos: <n>
+✅ 2/3 grupos encontrados.
 
-## 🚀 Instalação
+  ✔  "Meu Grupo 1"
+  ✔  "Meu Grupo 2"
+  ✖  "Meu Grupo 3" → similar: "Meu Grupo 03"
+
+📤 Enviando → "Meu Grupo 1"...
+   ✅ Confirmado!
+...
+[<data/hora>] 📊 Resultado: 2/2 mensagens enviadas.
+
+🕒 Agendado para todos os dias às 9:00 e 18:00.
+📌 Mantenha este terminal aberto para os envios continuarem.
+```
+
+## 🛠️ Tecnologias
+
+- **Node.js 18+**
+- **whatsapp-web.js** — controle do WhatsApp Web via Puppeteer
+- **node-cron** — agendamento
+- **qrcode-terminal** — QR Code de login no terminal
+
+## 🚀 Como rodar
 
 ```bash
-# Clone o repositório
 git clone https://github.com/KevinLopes23/disparo-whats.git
 cd disparo-whats
-
-# Instale as dependências
 npm install
 ```
 
----
-
-## ⚙️ Configuração
-
-Edite o arquivo **`config.js`** para personalizar:
+Edite o `config.js`:
 
 ```js
 module.exports = {
-    // Nomes EXATOS dos grupos (como aparecem no WhatsApp)
-    groups: [
-        'Meu Grupo 1',
-        'Meu Grupo 2',
-    ],
-
-    // Mensagem a ser enviada (use *negrito* e _itálico_)
-    message: `Sua mensagem aqui...`,
-
-    // Horários de envio (formato 24h)
-    schedule: [9, 18],         // 09:00 e 18:00
-
-    // Enviar imediatamente ao iniciar?
-    sendOnStartup: true,
-
-    // Delay de sincronização (ms)
-    syncDelayMs: 15000,
+  groups: ['Meu Grupo 1', 'Meu Grupo 2'], // nomes EXATOS, com emojis
+  message: `Sua mensagem aqui (*negrito*, _itálico_)`,
+  schedule: [9, 18],      // horas do dia (24 h)
+  sendOnStartup: true,    // dispara ao conectar
+  syncDelayMs: 15000,     // espera a sincronização dos chats
 };
 ```
-
-> **💡 Dica:** O nome do grupo precisa ser **exatamente** igual ao que aparece no seu WhatsApp, incluindo emojis e caracteres especiais.
-
----
-
-## ▶️ Como Usar
 
 ```bash
 npm start
 ```
 
-### Primeiro uso
-
-1. Um **QR Code** aparecerá no terminal.
-2. Abra o WhatsApp no celular → **Aparelhos Conectados** → **Conectar um aparelho**.
-3. Escaneie o QR Code.
-4. Pronto! O bot começará a enviar.
-
-### Próximas vezes
-
-A sessão é salva automaticamente. Basta rodar `npm start` e o bot conecta direto, sem QR Code.
-
----
-
-## 📁 Estrutura do Projeto
-
-```
-disparo-whats/
-├── index.js          # Lógica principal do bot
-├── config.js         # Configuração (grupos, mensagem, horários)
-├── package.json      # Dependências e scripts
-├── .gitignore        # Arquivos ignorados pelo Git
-└── README.md         # Documentação
-```
-
----
-
-## 🛠️ Tecnologias
-
-| Pacote | Função |
-|---|---|
-| [`whatsapp-web.js`](https://github.com/pedroslopez/whatsapp-web.js) | Controle do WhatsApp Web via Puppeteer |
-| [`qrcode-terminal`](https://www.npmjs.com/package/qrcode-terminal) | Exibição do QR Code no terminal |
-| [`node-cron`](https://www.npmjs.com/package/node-cron) | Agendamento de tarefas (cron jobs) |
-
----
-
-## ⚠️ Avisos Importantes
-
-- **Não é uma API oficial.** Este bot simula o WhatsApp Web. Use com responsabilidade.
-- **Risco de banimento.** O envio excessivo de mensagens pode resultar em bloqueio da conta pelo WhatsApp. O bot já inclui pausas anti-spam, mas use com moderação.
-- **Mantenha o terminal aberto.** O bot só funciona enquanto o processo estiver rodando.
-- **Não compartilhe** a pasta `.wwebjs_auth/` — ela contém sua sessão do WhatsApp.
-
----
-
-## 🐛 Solução de Problemas
+Na primeira execução, escaneie o QR Code em **WhatsApp → Aparelhos conectados → Conectar um aparelho**. A sessão fica salva em `.wwebjs_auth/` (não compartilhe essa pasta). O bot só envia enquanto o processo estiver rodando.
 
 | Problema | Solução |
 |---|---|
-| QR Code aparece repetidamente | Delete a pasta `.wwebjs_auth/` e tente novamente |
-| Grupo não encontrado | Verifique se o nome no `config.js` é **exatamente** igual ao do WhatsApp |
-| Erro `r: r` no getChats | Bug conhecido da lib — o bot já usa acesso direto ao store para evitar isso |
-| Timeout do Puppeteer | O bot já configura 5min de timeout. Se persistir, aumente `protocolTimeout` no `index.js` |
+| QR Code aparece toda vez | Apague `.wwebjs_auth/` e conecte de novo |
+| Grupo não encontrado | Confira se o nome em `config.js` é idêntico ao do WhatsApp |
+| Timeout do Puppeteer | Aumente `protocolTimeout` em `index.js` (padrão 5 min) |
 
----
+## ⚠️ Aviso
+
+Este projeto **não usa a API oficial** do WhatsApp: ele automatiza o WhatsApp Web, o que vai contra os Termos de Serviço e pode levar ao **banimento do número**. Envie apenas para grupos onde a divulgação é permitida, com moderação, e nunca para quem não pediu para receber.
 
 ## 📄 Licença
 
-Este projeto está sob a licença [MIT](LICENSE).
+Distribuído sob a licença [MIT](LICENSE).
 
----
+## 👤 Autor
 
-<p align="center">
-  Feito com ☕ e Node.js
-</p>
+Feito por [Kevin Lopes](https://github.com/KevinLopes23)
